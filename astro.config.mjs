@@ -14,6 +14,9 @@ export default defineConfig({
   }),
   vite: {
     plugins: [tailwindcss()],
+    ssr: {
+      noExternal: ["@casoon/skibidoo-ui"],
+    },
   },
   i18n: {
     defaultLocale: "de",
