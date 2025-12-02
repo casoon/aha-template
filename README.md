@@ -1,125 +1,121 @@
 # AHA-Stack Template
 
-Ein Template für AHA-Stack Projekte: **Astro + HTMX + Alpine.js + Tailwind CSS v4**
+A template for AHA-Stack projects: **Astro + HTMX + Alpine.js + Tailwind CSS v4**
 
-Dieses Template dient als Proof of Concept für wiederverwendbare AHA-Stack Anwendungen mit serverseitigem Fragment-Rendering.
+This template serves as a proof of concept for reusable AHA-Stack applications with server-side fragment rendering.
 
 ## Stack
 
-- **[Astro 5](https://astro.build)** - Statisches & Server-Side Rendering
-- **[HTMX](https://htmx.org)** - Serverseitige Interaktivität via HTML-Fragmente
-- **[Alpine.js](https://alpinejs.dev)** - Leichtgewichtige Client-Interaktivität
-- **[Tailwind CSS v4](https://tailwindcss.com)** - Utility-First CSS
-- **[Cloudflare Workers](https://workers.cloudflare.com)** - Edge Deployment
+- **[Astro 5](https://astro.build)** - Static & Server-Side Rendering
+- **[HTMX](https://htmx.org)** - Server-side interactivity via HTML fragments
+- **[Alpine.js](https://alpinejs.dev)** - Lightweight client interactivity
+- **[Tailwind CSS v4](https://tailwindcss.com)** - Utility-first CSS
+- **[Cloudflare Workers](https://workers.cloudflare.com)** - Edge deployment
 
 ## Casoon Packages
 
-| Package | Beschreibung |
+| Package | Description |
 |---------|-------------|
-| [@casoon/fragment-renderer](https://github.com/casoon/fragment-renderer) | Rendert Astro-Komponenten als HTML-Fragmente für HTMX-Responses |
-| [@casoon/skibidoo-ui](https://github.com/casoon/skibidoo-ui) | SSR-first UI-Komponenten für den AHA-Stack |
+| [@casoon/fragment-renderer](https://github.com/casoon/fragment-renderer) | Renders Astro components as HTML fragments for HTMX responses |
+| [@casoon/skibidoo-ui](https://github.com/casoon/skibidoo-ui) | SSR-first UI components for the AHA-Stack |
 
-## Konzept
+## Concept
 
-Der AHA-Stack kombiniert die Vorteile von serverseitigem Rendering mit gezielter Client-Interaktivität:
+The AHA-Stack combines the benefits of server-side rendering with targeted client interactivity:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │  Browser                                                    │
 │  ┌───────────────────────────────────────────────────────┐  │
-│  │  HTMX Request (z.B. Sortierung, Paginierung)          │  │
+│  │  HTMX Request (e.g. sorting, pagination)              │  │
 │  │  GET /api/users?page=2&sortField=name                 │  │
 │  └───────────────────────────────────────────────────────┘  │
 │                            │                                │
 │                            ▼                                │
 │  ┌───────────────────────────────────────────────────────┐  │
 │  │  Server (Astro API Route)                             │  │
-│  │  1. Daten aus DB laden                                │  │
-│  │  2. Filtern, Sortieren, Paginieren                    │  │
-│  │  3. Fragment mit @casoon/fragment-renderer rendern    │  │
-│  │  4. HTML + Styles zurückgeben                         │  │
+│  │  1. Load data from DB                                 │  │
+│  │  2. Filter, sort, paginate                            │  │
+│  │  3. Render fragment with @casoon/fragment-renderer    │  │
+│  │  4. Return HTML + styles                              │  │
 │  └───────────────────────────────────────────────────────┘  │
 │                            │                                │
 │                            ▼                                │
 │  ┌───────────────────────────────────────────────────────┐  │
-│  │  HTMX ersetzt DOM-Element mit neuem HTML              │  │
+│  │  HTMX replaces DOM element with new HTML              │  │
 │  └───────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**Vorteile:**
-- Keine Client-Side State-Verwaltung
-- Datenlogik bleibt auf dem Server
-- Komponenten liefern eigene Styles mit
-- Progressiv - funktioniert auch ohne JavaScript
+**Benefits:**
+- No client-side state management
+- Data logic stays on the server
+- Components deliver their own styles
+- Progressive - works without JavaScript
 
 ## Installation
 
 ```bash
-# Repository klonen
+# Clone repository
 git clone https://github.com/casoon/aha-template.git
 cd aha-template
 
-# Dependencies installieren
+# Install dependencies
 pnpm install
 
-# Entwicklungsserver starten
+# Start development server
 pnpm dev
 ```
 
-## Projektstruktur
+## Project Structure
 
 ```
 src/
-├── components/
-│   └── ui/                    # Lokale UI-Komponenten
-│       ├── Grid.astro         # HTMX-fähiges Data Grid
-│       └── styles/
-│           └── grid.ts        # Extrahierte Styles für Fragment-Rendering
 ├── layouts/
-│   └── BaseLayout.astro       # Basis-Layout mit HTMX/Alpine Setup
+│   └── BaseLayout.astro       # Base layout with HTMX/Alpine setup
 ├── pages/
 │   ├── api/
-│   │   └── users.ts           # API-Endpoint mit Fragment-Rendering
+│   │   └── users.ts           # API endpoint with fragment rendering
 │   ├── index.astro
 │   └── examples.astro
 ├── i18n/
 │   └── translations.ts        # i18n (de/en)
 └── styles/
-    └── base.css               # Tailwind + Custom Styles
+    └── base.css               # Tailwind + custom styles
 ```
 
-## Fragment-Rendering
+## Fragment Rendering with Registry
 
-Das Kernkonzept: Astro-Komponenten werden serverseitig gerendert und als HTML-Fragmente an HTMX zurückgegeben.
+The core concept: Astro components from `@casoon/skibidoo-ui` are rendered server-side via the registry and returned as HTML fragments to HTMX.
 
-### API-Endpoint Beispiel
+### API Endpoint Example
 
 ```typescript
 // src/pages/api/users.ts
 import { createAstroRuntime } from "@casoon/fragment-renderer";
-import Grid from "@components/ui/Grid.astro";
-import { gridStyles } from "@components/ui/styles/grid";
+import { createPartialRegistry } from "@casoon/skibidoo-ui/registry";
 
+// Create runtime with UI registry
 const runtime = createAstroRuntime({
-  components: [{
-    id: "grid",
-    loader: () => Promise.resolve({ default: Grid }),
-    styles: gridStyles,  // Styles werden mit dem Fragment geliefert
-  }],
+  components: createPartialRegistry(["ui-grid"]),
 });
 
 export const GET: APIRoute = async ({ url }) => {
   const page = parseInt(url.searchParams.get("page") || "1");
   const sortField = url.searchParams.get("sortField");
-  
-  // Daten laden und verarbeiten (serverseitig!)
+
+  // Load and process data (server-side!)
   const data = await fetchAndProcessData({ page, sortField });
-  
-  // Komponente als HTML-Fragment rendern
+
+  // Render component as HTML fragment
   const html = await runtime.renderToString({
-    componentId: "grid",
-    props: { data, currentPage: page, sortField },
+    componentId: "ui-grid",
+    props: { 
+      data, 
+      currentPage: page, 
+      sortField,
+      endpoint: "/api/users",
+    },
   });
 
   return new Response(html, {
@@ -128,41 +124,44 @@ export const GET: APIRoute = async ({ url }) => {
 };
 ```
 
-### Komponente mit HTMX
+### Astro Config
 
-```astro
-<!-- Grid.astro -->
-<div id="users-grid" class="ui-grid">
-  <table>
-    <thead>
-      <tr>
-        {columns.map((col) => (
-          <th>
-            <button
-              hx-get={`/api/users?sortField=${col.field}`}
-              hx-target="#users-grid"
-              hx-swap="outerHTML"
-            >
-              {col.label}
-            </button>
-          </th>
-        ))}
-      </tr>
-    </thead>
-    <!-- ... -->
-  </table>
-</div>
+Add `@casoon/skibidoo-ui` to your Vite SSR config:
+
+```javascript
+// astro.config.mjs
+export default defineConfig({
+  vite: {
+    ssr: {
+      noExternal: ["@casoon/skibidoo-ui"],
+    },
+  },
+});
 ```
+
+## Available Registry Components
+
+| Component ID    | Description                           |
+|-----------------|---------------------------------------|
+| `ui-grid`       | Data grid with sort/filter/pagination |
+| `ui-form`       | Dynamic form with validation          |
+| `ui-button`     | Button with variants                  |
+| `ui-card`       | Card container                        |
+| `ui-alert`      | Alert/notification box                |
+| `ui-modal`      | Modal dialog                          |
+| `ui-input`      | Text input field                      |
+| `ui-select`     | Select dropdown                       |
+| `ui-datepicker` | Date picker                           |
 
 ## Scripts
 
 ```bash
-pnpm dev          # Entwicklungsserver
-pnpm build        # Production Build
-pnpm preview      # Build Preview
-pnpm cf-deploy    # Deploy zu Cloudflare Workers
-pnpm lint         # Biome Linting
-pnpm format       # Biome Formatierung
+pnpm dev          # Development server
+pnpm build        # Production build
+pnpm preview      # Build preview
+pnpm cf-deploy    # Deploy to Cloudflare Workers
+pnpm lint         # Biome linting
+pnpm format       # Biome formatting
 ```
 
 ## Deployment
@@ -170,17 +169,22 @@ pnpm format       # Biome Formatierung
 ### Cloudflare Workers
 
 ```bash
-# wrangler.toml konfigurieren, dann:
+# Configure wrangler.toml, then:
 pnpm cf-deploy
 ```
 
+## Requirements
+
+- Node.js >= 22
+- pnpm
+
 ## Roadmap
 
-- [ ] Weitere Skibidoo-UI Komponenten integrieren
-- [ ] Form-Handling mit serverseitiger Validierung
-- [ ] Auth-Beispiel
-- [ ] Datenbank-Integration (D1/Drizzle)
+- [ ] Integrate more skibidoo-ui components
+- [ ] Form handling with server-side validation
+- [ ] Auth example
+- [ ] Database integration (D1/Drizzle)
 
-## Lizenz
+## License
 
 MIT
