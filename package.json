@@ -22,7 +22,7 @@
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",
     "@casoon/fragment-renderer": "^0.1.1",
-    "@casoon/skibidoo-ui": "^0.1.6",
+    "@casoon/skibidoo-ui": "^0.1.7",
     "@tailwindcss/vite": "^4.1.17",
     "alpinejs": "^3.14.0",
     "astro": "^5.16.3",
