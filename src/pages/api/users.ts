@@ -1,6 +1,5 @@
 import { createAstroRuntime } from "@casoon/fragment-renderer";
-import Grid from "@casoon/skibidoo-ui/src/components/grid/Grid.astro";
-import { gridStyles } from "@casoon/skibidoo-ui/dist/styles/grid";
+import { createPartialRegistry } from "@casoon/skibidoo-ui";
 import type { APIRoute } from "astro";
 
 // Simulierte Datenbank mit Einträgen
@@ -134,16 +133,10 @@ const gridColumns = [
   { field: "status", label: "Status", sortable: true },
 ];
 
-// Fragment-Renderer Runtime erstellen mit Styles
+// Fragment-Renderer Runtime mit UI-Registry erstellen
 function createRuntime() {
   return createAstroRuntime({
-    components: [
-      {
-        id: "grid",
-        loader: () => Promise.resolve({ default: Grid }),
-        styles: gridStyles,
-      },
-    ],
+    components: createPartialRegistry(["ui-grid"]),
   });
 }
 
@@ -199,7 +192,7 @@ export const GET: APIRoute = async ({ url }) => {
   const runtime = createRuntime();
 
   const html = await runtime.renderToString({
-    componentId: "grid",
+    componentId: "ui-grid",
     props: {
       __id: "users-grid",
       columns: gridColumns,
