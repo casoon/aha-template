@@ -1,0 +1,233 @@
+---
+import Form from "@components/ui/Form.astro";
+import { getLocaleFromUrl, t } from "@i18n/translations";
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+const locale = getLocaleFromUrl(Astro.url);
+
+// Form fields configuration
+const formFields = [
+	{
+		name: "name",
+		label: t(locale, "name"),
+		type: "text" as const,
+		required: true,
+		placeholder: locale === "de" ? "Ihr Name" : "Your name",
+	},
+	{
+		name: "email",
+		label: t(locale, "email"),
+		type: "email" as const,
+		required: true,
+		placeholder: locale === "de" ? "ihre@email.de" : "your@email.com",
+	},
+	{
+		name: "category",
+		label: locale === "de" ? "Kategorie" : "Category",
+		type: "select" as const,
+		options: [
+			{
+				value: "general",
+				label: locale === "de" ? "Allgemein" : "General",
+			},
+			{ value: "support", label: "Support" },
+			{ value: "feedback", label: "Feedback" },
+		],
+	},
+	{
+		name: "message",
+		label: t(locale, "message"),
+		type: "textarea" as const,
+		required: true,
+		placeholder: locale === "de" ? "Ihre Nachricht..." : "Your message...",
+	},
+	{
+		name: "newsletter",
+		label:
+			locale === "de" ? "Newsletter abonnieren" : "Subscribe to newsletter",
+		type: "checkbox" as const,
+	},
+];
+---
+
+<BaseLayout title={t(locale, "examples")} locale={locale}>
+    <div class="space-y-12">
+        <header>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">
+                Skibidoo-UI {t(locale, "examples")}
+            </h1>
+            <p class="text-gray-600">
+                {
+                    locale === "de"
+                        ? "Beispiele für Skibidoo-UI Komponenten im AHA-Stack"
+                        : "Examples of Skibidoo-UI components in the AHA-Stack"
+                }
+            </p>
+        </header>
+
+        <!-- Serverseitiges Grid mit HTMX -->
+        <section class="space-y-4">
+            <h2 class="text-2xl font-bold text-gray-900">
+                {t(locale, "gridExample")}
+            </h2>
+            <p class="text-gray-600">
+                {
+                    locale === "de"
+                        ? "Das Grid unterstützt serverseitige Sortierung, Paginierung und Filterung via HTMX."
+                        : "The Grid supports server-side sorting, pagination and filtering via HTMX."
+                }
+            </p>
+            <div class="glass-card p-6">
+                <!-- Grid wird beim Laden via HTMX vom Server geholt -->
+                <div
+                    id="users-grid"
+                    hx-get="/api/users?page=1&pageSize=5"
+                    hx-trigger="load"
+                    hx-swap="outerHTML"
+                >
+                    <div class="text-center py-8 text-gray-500">
+                        {locale === "de" ? "Lade Daten..." : "Loading data..."}
+                    </div>
+                </div>
+            </div>
+            <p class="text-sm text-gray-500">
+                {
+                    locale === "de"
+                        ? "Klicke auf Spaltenüberschriften zum Sortieren, nutze die Suche zum Filtern, und die Buttons zur Navigation."
+                        : "Click column headers to sort, use search to filter, and buttons to navigate."
+                }
+            </p>
+        </section>
+
+        <!-- Form Example -->
+        <section class="space-y-4">
+            <h2 class="text-2xl font-bold text-gray-900">
+                {t(locale, "formExample")}
+            </h2>
+            <p class="text-gray-600">
+                {
+                    locale === "de"
+                        ? "Das Formular unterstützt verschiedene Feldtypen und Layouts."
+                        : "The Form supports different field types and layouts."
+                }
+            </p>
+            <div class="glass-card p-6">
+                <Form
+                    fields={formFields}
+                    action="/api/contact"
+                    method="POST"
+                    layout="vertical"
+                    submitLabel={t(locale, "send")}
+                    showReset={true}
+                    resetLabel={locale === "de" ? "Zurücksetzen" : "Reset"}
+                    __id="contact-form"
+                />
+            </div>
+        </section>
+
+        <!-- HTMX Form Example -->
+        <section class="space-y-4">
+            <h2 class="text-2xl font-bold text-gray-900">HTMX Form</h2>
+            <p class="text-gray-600">
+                {
+                    locale === "de"
+                        ? "Formulare können mit HTMX ohne Page-Reload abgesendet werden."
+                        : "Forms can be submitted with HTMX without page reload."
+                }
+            </p>
+            <div class="glass-card p-6">
+                <form
+                    hx-post="/api/contact"
+                    hx-target="#form-result"
+                    hx-swap="innerHTML"
+                    class="space-y-4"
+                >
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            for="htmx-name"
+                        >
+                            {t(locale, "name")}
+                        </label>
+                        <input
+                            type="text"
+                            id="htmx-name"
+                            name="name"
+                            class="input-field"
+                            placeholder={locale === "de"
+                                ? "Ihr Name"
+                                : "Your name"}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            for="htmx-email"
+                        >
+                            {t(locale, "email")}
+                        </label>
+                        <input
+                            type="email"
+                            id="htmx-email"
+                            name="email"
+                            class="input-field"
+                            placeholder={locale === "de"
+                                ? "ihre@email.de"
+                                : "your@email.com"}
+                            required
+                        />
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        {t(locale, "send")} (HTMX)
+                    </button>
+                </form>
+                <div id="form-result" class="mt-4">
+                    <!-- HTMX response will appear here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Alpine.js Counter Example -->
+        <section class="space-y-4">
+            <h2 class="text-2xl font-bold text-gray-900">Alpine.js</h2>
+            <p class="text-gray-600">
+                {
+                    locale === "de"
+                        ? "Alpine.js für lokale Client-Interaktivität ohne Server-Roundtrip."
+                        : "Alpine.js for local client interactivity without server roundtrip."
+                }
+            </p>
+            <div class="glass-card p-6" x-data="{ count: 0, open: false }">
+                <div class="flex items-center gap-4 mb-4">
+                    <button @click="count--" class="btn-secondary px-4 py-2"
+                        >-</button
+                    >
+                    <span class="text-2xl font-bold" x-text="count"></span>
+                    <button @click="count++" class="btn-secondary px-4 py-2"
+                        >+</button
+                    >
+                </div>
+                <button @click="open = !open" class="btn-primary">
+                    <span x-text="open ? 'Hide' : 'Show'"></span> Details
+                </button>
+                <div
+                    x-show="open"
+                    x-transition
+                    class="mt-4 p-4 bg-gray-100 rounded-lg"
+                >
+                    <p>
+                        {
+                            locale === "de"
+                                ? "Alpine.js macht reaktive UI-Komponenten einfach!"
+                                : "Alpine.js makes reactive UI components easy!"
+                        }
+                    </p>
+                    <p class="mt-2">
+                        Counter: <span x-text="count" class="font-bold"></span>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+</BaseLayout>

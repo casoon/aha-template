@@ -1,0 +1,328 @@
+---
+import Form from "@components/ui/Form.astro";
+// Skibidoo-UI Komponenten (lokal kopiert)
+import Grid from "@components/ui/Grid.astro";
+import { t } from "@i18n/translations";
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+const locale = "en";
+
+// Sample data for Grid
+const users = [
+	{
+		id: 1,
+		name: "John Smith",
+		email: "john@example.com",
+		status: "active",
+		role: "Admin",
+	},
+	{
+		id: 2,
+		name: "Jane Doe",
+		email: "jane@example.com",
+		status: "active",
+		role: "User",
+	},
+	{
+		id: 3,
+		name: "Bob Wilson",
+		email: "bob@example.com",
+		status: "inactive",
+		role: "User",
+	},
+	{
+		id: 4,
+		name: "Alice Brown",
+		email: "alice@example.com",
+		status: "active",
+		role: "Editor",
+	},
+	{
+		id: 5,
+		name: "Charlie Davis",
+		email: "charlie@example.com",
+		status: "active",
+		role: "User",
+	},
+	{
+		id: 6,
+		name: "Eva Martinez",
+		email: "eva@example.com",
+		status: "inactive",
+		role: "User",
+	},
+	{
+		id: 7,
+		name: "David Lee",
+		email: "david@example.com",
+		status: "active",
+		role: "Admin",
+	},
+	{
+		id: 8,
+		name: "Sarah Johnson",
+		email: "sarah@example.com",
+		status: "active",
+		role: "Editor",
+	},
+];
+
+const gridColumns = [
+	{
+		field: "id",
+		label: "ID",
+		width: 60,
+		sortable: true,
+		align: "center" as const,
+	},
+	{ field: "name", label: t(locale, "name"), sortable: true },
+	{ field: "email", label: t(locale, "email"), sortable: true },
+	{ field: "role", label: "Role", sortable: true },
+	{ field: "status", label: t(locale, "status"), sortable: true },
+];
+
+// Form fields configuration
+const formFields = [
+	{
+		name: "name",
+		label: t(locale, "name"),
+		type: "text" as const,
+		required: true,
+		placeholder: "Your name",
+	},
+	{
+		name: "email",
+		label: t(locale, "email"),
+		type: "email" as const,
+		required: true,
+		placeholder: "your@email.com",
+	},
+	{
+		name: "category",
+		label: "Category",
+		type: "select" as const,
+		options: [
+			{ value: "general", label: "General" },
+			{ value: "support", label: "Support" },
+			{ value: "feedback", label: "Feedback" },
+		],
+	},
+	{
+		name: "message",
+		label: t(locale, "message"),
+		type: "textarea" as const,
+		required: true,
+		placeholder: "Your message...",
+	},
+	{
+		name: "newsletter",
+		label: "Subscribe to newsletter",
+		type: "checkbox" as const,
+	},
+];
+---
+
+<BaseLayout title={t(locale, "examples")} locale={locale}>
+    <div class="space-y-12">
+        <header>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">
+                Skibidoo-UI {t(locale, "examples")}
+            </h1>
+            <p class="text-gray-600">
+                Examples of Skibidoo-UI components in the AHA-Stack
+            </p>
+        </header>
+
+        <!-- Grid Example -->
+        <section class="space-y-4">
+            <h2 class="text-2xl font-bold text-gray-900">
+                {t(locale, "gridExample")}
+            </h2>
+            <p class="text-gray-600">
+                The Grid supports sorting, pagination and selection.
+            </p>
+            <div class="glass-card p-6">
+                <Grid
+                    columns={gridColumns}
+                    data={users}
+                    pagination={{ pageSize: 5, showTotal: true }}
+                    sorting={true}
+                    filtering={true}
+                    selection="multiple"
+                    rowKey="id"
+                    emptyText="No data available"
+                    __id="users-grid"
+                />
+            </div>
+        </section>
+
+        <!-- Form Example -->
+        <section class="space-y-4">
+            <h2 class="text-2xl font-bold text-gray-900">
+                {t(locale, "formExample")}
+            </h2>
+            <p class="text-gray-600">
+                The Form supports different field types and layouts.
+            </p>
+            <div class="glass-card p-6">
+                <Form
+                    fields={formFields}
+                    action="/api/contact"
+                    method="POST"
+                    layout="vertical"
+                    submitLabel={t(locale, "send")}
+                    showReset={true}
+                    resetLabel="Reset"
+                    __id="contact-form"
+                />
+            </div>
+        </section>
+
+        <!-- HTMX + Skibidoo-UI Example -->
+        <section class="space-y-4">
+            <h2 class="text-2xl font-bold text-gray-900">HTMX + Skibidoo-UI</h2>
+            <p class="text-gray-600">
+                Forms can be submitted with HTMX without page reload.
+            </p>
+            <div class="glass-card p-6">
+                <form
+                    hx-post="/api/contact"
+                    hx-target="#form-result"
+                    hx-swap="innerHTML"
+                    class="space-y-4"
+                >
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            for="htmx-name"
+                        >
+                            {t(locale, "name")}
+                        </label>
+                        <input
+                            type="text"
+                            id="htmx-name"
+                            name="name"
+                            class="input-field"
+                            placeholder="Your name"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            for="htmx-email"
+                        >
+                            {t(locale, "email")}
+                        </label>
+                        <input
+                            type="email"
+                            id="htmx-email"
+                            name="email"
+                            class="input-field"
+                            placeholder="your@email.com"
+                            required
+                        />
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        {t(locale, "send")} (HTMX)
+                    </button>
+                </form>
+                <div id="form-result" class="mt-4">
+                    <!-- HTMX response will appear here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Alpine.js Interactive Example -->
+        <section class="space-y-4">
+            <h2 class="text-2xl font-bold text-gray-900">
+                Alpine.js + {t(locale, "gridExample")}
+            </h2>
+            <p class="text-gray-600">
+                Combine Alpine.js for local interactivity with server-rendered
+                components.
+            </p>
+            <div
+                class="glass-card p-6"
+                x-data="{ filter: '', selectedCount: 0 }"
+            >
+                <div class="flex gap-4 mb-4">
+                    <input
+                        type="text"
+                        x-model="filter"
+                        class="input-field flex-1"
+                        placeholder="Filter locally..."
+                    />
+                    <span class="flex items-center text-gray-600">
+                        Selected: <span
+                            x-text="selectedCount"
+                            class="ml-1 font-bold"></span>
+                    </span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full border border-gray-200 rounded-lg">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-4 py-2 text-left">
+                                    <input
+                                        type="checkbox"
+                                        @change="selectedCount = $el.checked ? {users.length} : 0"
+                                    />
+                                </th>
+                                <th class="px-4 py-2 text-left"
+                                    >{t(locale, "name")}</th
+                                >
+                                <th class="px-4 py-2 text-left"
+                                    >{t(locale, "email")}</th
+                                >
+                                <th class="px-4 py-2 text-left">Role</th>
+                                <th class="px-4 py-2 text-left"
+                                    >{t(locale, "status")}</th
+                                >
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                users.map((user) => (
+                                    <tr
+                                        class="border-t border-gray-200 hover:bg-gray-50"
+                                        x-show={`!filter || '${user.name.toLowerCase()}'.includes(filter.toLowerCase()) || '${user.email.toLowerCase()}'.includes(filter.toLowerCase())`}
+                                    >
+                                        <td class="px-4 py-2">
+                                            <input
+                                                type="checkbox"
+                                                @change="selectedCount += $el.checked ? 1 : -1"
+                                            />
+                                        </td>
+                                        <td class="px-4 py-2 font-medium">
+                                            {user.name}
+                                        </td>
+                                        <td class="px-4 py-2 text-gray-600">
+                                            {user.email}
+                                        </td>
+                                        <td class="px-4 py-2">{user.role}</td>
+                                        <td class="px-4 py-2">
+                                            <span
+                                                class:list={[
+                                                    "px-2 py-1 rounded-full text-xs font-medium",
+                                                    user.status === "active"
+                                                        ? "bg-success-100 text-success-700"
+                                                        : "bg-gray-100 text-gray-600",
+                                                ]}
+                                            >
+                                                {user.status === "active"
+                                                    ? t(locale, "active")
+                                                    : t(locale, "inactive")}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+</BaseLayout>

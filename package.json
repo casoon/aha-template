@@ -1,0 +1,38 @@
+{
+  "name": "aha-template",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "AHA-Stack Template: Astro + HTMX + Alpine.js + Tailwind CSS with Skibidoo-UI",
+  "packageManager": "pnpm@9.14.2",
+  "volta": {
+    "node": "24.0.0",
+    "pnpm": "9.14.2"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "cf-deploy": "astro build && echo '_worker.js' > dist/.assetsignore && wrangler deploy",
+    "lint": "biome check src/",
+    "lint:fix": "biome check --write src/",
+    "format": "biome format --write src/",
+    "prepare": "husky",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^12.6.12",
+    "@casoon/fragment-renderer": "file:../fragment-renderer",
+    "@casoon/skibidoo-ui": "file:../skibidoo-ui",
+    "@tailwindcss/vite": "^4.1.17",
+    "alpinejs": "^3.14.0",
+    "astro": "^5.16.3",
+    "htmx.org": "^2.0.0",
+    "tailwindcss": "^4.1.17"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.8",
+    "@types/alpinejs": "^3.13.0",
+    "husky": "^9.1.7",
+    "wrangler": "^4.51.0"
+  }
+}

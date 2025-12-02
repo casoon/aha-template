@@ -1,0 +1,91 @@
+---
+import { getLocaleFromUrl, t } from "@i18n/translations";
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+const locale = getLocaleFromUrl(Astro.url);
+---
+
+<BaseLayout title={t(locale, "home")} locale={locale}>
+  <div class="space-y-8">
+    <!-- Hero Section -->
+    <section class="glass-card p-8 md:p-12 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        {t(locale, "welcome")}
+      </h1>
+      <p class="text-xl text-gray-600 mb-8">
+        {t(locale, "welcomeMessage")}
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href={`${locale === "de" ? "" : "/" + locale}/examples`} class="btn-primary">
+          {t(locale, "examples")}
+        </a>
+        <a href="https://github.com/casoon/skibidoo-ui" target="_blank" rel="noopener" class="btn-secondary">
+          Skibidoo-UI Docs
+        </a>
+      </div>
+    </section>
+
+    <!-- AHA Stack Info -->
+    <section class="grid md:grid-cols-3 gap-6">
+      <div class="glass-card p-6">
+        <div class="text-3xl mb-3">A</div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">Astro</h3>
+        <p class="text-gray-600">
+          Server-first framework mit Islands Architecture. Schnell, SEO-freundlich und flexibel.
+        </p>
+      </div>
+      <div class="glass-card p-6">
+        <div class="text-3xl mb-3">H</div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">HTMX</h3>
+        <p class="text-gray-600">
+          HTML-First Interaktivität. AJAX, WebSockets und mehr direkt in HTML-Attributen.
+        </p>
+      </div>
+      <div class="glass-card p-6">
+        <div class="text-3xl mb-3">A</div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">Alpine.js</h3>
+        <p class="text-gray-600">
+          Leichtgewichtiges JavaScript-Framework für reaktive UI-Komponenten.
+        </p>
+      </div>
+    </section>
+
+    <!-- Quick HTMX Demo -->
+    <section class="glass-card p-6">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">{t(locale, "htmxExample")}</h2>
+      <p class="text-gray-600 mb-4">
+        Klicke den Button um Daten vom Server zu laden (ohne Page Reload):
+      </p>
+      <button
+        class="btn-primary"
+        hx-get={`/api/hello?locale=${locale}`}
+        hx-target="#htmx-result"
+        hx-swap="innerHTML"
+      >
+        {t(locale, "loading")} Server Response
+      </button>
+      <div id="htmx-result" class="mt-4 p-4 bg-gray-100 rounded-lg min-h-[60px]">
+        <!-- HTMX response will appear here -->
+      </div>
+    </section>
+
+    <!-- Quick Alpine Demo -->
+    <section class="glass-card p-6">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">{t(locale, "alpineExample")}</h2>
+      <div x-data="{ count: 0, open: false }">
+        <div class="flex items-center gap-4 mb-4">
+          <button @click="count--" class="btn-secondary px-4 py-2">-</button>
+          <span class="text-2xl font-bold" x-text="count"></span>
+          <button @click="count++" class="btn-secondary px-4 py-2">+</button>
+        </div>
+        <button @click="open = !open" class="btn-primary">
+          <span x-text="open ? 'Hide' : 'Show'"></span> Details
+        </button>
+        <div x-show="open" x-transition class="mt-4 p-4 bg-gray-100 rounded-lg">
+          <p>Alpine.js macht reaktive UI-Komponenten einfach!</p>
+          <p class="mt-2">Counter: <span x-text="count" class="font-bold"></span></p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

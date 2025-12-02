@@ -1,0 +1,2 @@
+pnpm exec biome format --write src/
+pnpm run build

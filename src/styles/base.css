@@ -1,0 +1,457 @@
+@import "tailwindcss";
+
+/* Skibidoo-UI Styles */
+@import "@casoon/skibidoo-ui/styles";
+@import "@casoon/skibidoo-ui/themes/light.css";
+
+@theme {
+    --font-family-sans:
+        system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        sans-serif;
+
+    /* Primary Colors */
+    --color-primary-50: #eff6ff;
+    --color-primary-100: #dbeafe;
+    --color-primary-200: #bfdbfe;
+    --color-primary-300: #93c5fd;
+    --color-primary-400: #60a5fa;
+    --color-primary-500: #3b82f6;
+    --color-primary-600: #2563eb;
+    --color-primary-700: #1d4ed8;
+    --color-primary-800: #1e40af;
+    --color-primary-900: #1e3a8a;
+
+    /* Secondary Colors */
+    --color-secondary-50: #f5f3ff;
+    --color-secondary-100: #ede9fe;
+    --color-secondary-200: #ddd6fe;
+    --color-secondary-300: #c4b5fd;
+    --color-secondary-400: #a78bfa;
+    --color-secondary-500: #8b5cf6;
+    --color-secondary-600: #7c3aed;
+    --color-secondary-700: #6d28d9;
+    --color-secondary-800: #5b21b6;
+    --color-secondary-900: #4c1d95;
+
+    /* Success Colors */
+    --color-success-50: #f0fdf4;
+    --color-success-100: #dcfce7;
+    --color-success-200: #bbf7d0;
+    --color-success-300: #86efac;
+    --color-success-400: #4ade80;
+    --color-success-500: #22c55e;
+    --color-success-600: #16a34a;
+    --color-success-700: #15803d;
+    --color-success-800: #166534;
+    --color-success-900: #14532d;
+
+    /* Warning Colors */
+    --color-warning-50: #fffbeb;
+    --color-warning-100: #fef3c7;
+    --color-warning-200: #fde68a;
+    --color-warning-300: #fcd34d;
+    --color-warning-400: #fbbf24;
+    --color-warning-500: #f59e0b;
+    --color-warning-600: #d97706;
+    --color-warning-700: #b45309;
+    --color-warning-800: #92400e;
+    --color-warning-900: #78350f;
+
+    /* Danger Colors */
+    --color-danger-50: #fef2f2;
+    --color-danger-100: #fee2e2;
+    --color-danger-200: #fecaca;
+    --color-danger-300: #fca5a5;
+    --color-danger-400: #f87171;
+    --color-danger-500: #ef4444;
+    --color-danger-600: #dc2626;
+    --color-danger-700: #b91c1c;
+    --color-danger-800: #991b1b;
+    --color-danger-900: #7f1d1d;
+}
+
+@layer base {
+    body {
+        @apply min-h-screen bg-gray-50 text-gray-900;
+    }
+}
+
+@layer components {
+    /* Glass Card Effect */
+    .glass-card {
+        @apply bg-white/80 backdrop-blur-md rounded-2xl shadow-lg border border-white/50;
+    }
+
+    /* Primary Button */
+    .btn-primary {
+        @apply px-6 py-3 text-base font-semibold text-white rounded-lg
+               bg-primary-600 hover:bg-primary-700
+               transform hover:scale-[1.02] transition-all duration-200
+               shadow-md hover:shadow-lg
+               focus:outline-none focus:ring-4 focus:ring-primary-300;
+    }
+
+    /* Secondary Button */
+    .btn-secondary {
+        @apply px-6 py-3 text-base font-semibold text-primary-700 rounded-lg
+               bg-white border-2 border-primary-300
+               hover:bg-primary-50 hover:border-primary-400
+               transform hover:scale-[1.02] transition-all duration-200
+               shadow-sm hover:shadow-md
+               focus:outline-none focus:ring-4 focus:ring-primary-200;
+    }
+
+    /* Input Field */
+    .input-field {
+        @apply w-full px-4 py-3 text-base
+               bg-white rounded-lg border border-gray-300
+               focus:border-primary-500 focus:ring-4 focus:ring-primary-200
+               transition-all duration-200
+               placeholder:text-gray-400;
+    }
+
+    /* Select Field */
+    .select-field {
+        @apply w-full px-4 py-3 text-base
+               bg-white rounded-lg border border-gray-300
+               focus:border-primary-500 focus:ring-4 focus:ring-primary-200
+               transition-all duration-200
+               cursor-pointer appearance-none
+               bg-no-repeat bg-right pr-10;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.75rem center;
+        background-size: 1.25em 1.25em;
+    }
+
+    /* Feedback States */
+    .feedback-success {
+        @apply bg-success-100 border-2 border-success-400 rounded-lg p-4
+               text-success-700 font-medium;
+    }
+
+    .feedback-error {
+        @apply bg-danger-100 border-2 border-danger-400 rounded-lg p-4
+               text-danger-700 font-medium;
+    }
+
+    /* Language Switcher */
+    .language-switcher {
+        @apply flex gap-2;
+    }
+
+    .language-btn {
+        @apply px-3 py-1.5 text-sm font-medium rounded-lg
+               bg-gray-100 hover:bg-gray-200 transition-all duration-200;
+    }
+
+    .language-btn.active {
+        @apply bg-primary-600 text-white;
+    }
+}
+
+/* Animations */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slide-up {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+}
+
+.animate-slide-up {
+    animation: slide-up 0.4s ease-out;
+}
+
+/* ========================================
+   Skibidoo-UI Grid Component Styles
+   ======================================== */
+.ui-grid {
+    --grid-border-color: #e5e7eb;
+    --grid-header-bg: #f9fafb;
+    --grid-row-hover: #f3f4f6;
+    --grid-row-selected: #dbeafe;
+
+    position: relative;
+    border: 1px solid var(--grid-border-color);
+    border-radius: 8px;
+    background: #fff;
+    font-family: system-ui, sans-serif;
+    font-size: 14px;
+    overflow: hidden;
+}
+
+.ui-grid--loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.ui-grid__loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 10;
+}
+
+.ui-grid__spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--grid-border-color);
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: ui-spin 0.8s linear infinite;
+}
+
+@keyframes ui-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.ui-grid__toolbar {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--grid-border-color);
+    background: var(--grid-header-bg);
+}
+
+.ui-grid__search {
+    width: 100%;
+    max-width: 300px;
+    padding: 8px 12px;
+    border: 1px solid var(--grid-border-color);
+    border-radius: 6px;
+    font-size: inherit;
+    background: #fff;
+}
+
+.ui-grid__search:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.ui-grid__wrapper {
+    overflow-x: auto;
+}
+
+.ui-grid__table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ui-grid__header {
+    padding: 12px 16px;
+    background: var(--grid-header-bg);
+    border-bottom: 2px solid var(--grid-border-color);
+    text-align: left;
+    font-weight: 600;
+    color: #374151;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.ui-grid__header--sortable {
+    padding: 0;
+}
+
+.ui-grid__sort-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    font: inherit;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s;
+}
+
+.ui-grid__sort-btn:hover {
+    background: #e5e7eb;
+}
+
+.ui-grid__header--sorted {
+    background: #e5e7eb;
+}
+
+.ui-grid__header--sorted .ui-grid__sort-btn {
+    background: #e5e7eb;
+}
+
+.ui-grid__header--center,
+.ui-grid__header--center .ui-grid__sort-btn {
+    text-align: center;
+    justify-content: center;
+}
+
+.ui-grid__header--right,
+.ui-grid__header--right .ui-grid__sort-btn {
+    text-align: right;
+    justify-content: flex-end;
+}
+
+.ui-grid__header--checkbox {
+    width: 50px;
+    text-align: center;
+}
+
+.ui-grid__sort-icon {
+    display: inline-block;
+    opacity: 0.4;
+    font-size: 12px;
+}
+
+.ui-grid__sort-icon::after {
+    content: "↕";
+}
+
+.ui-grid__sort-icon[data-sort="asc"] {
+    opacity: 1;
+    color: #3b82f6;
+}
+
+.ui-grid__sort-icon[data-sort="asc"]::after {
+    content: "↑";
+}
+
+.ui-grid__sort-icon[data-sort="desc"] {
+    opacity: 1;
+    color: #3b82f6;
+}
+
+.ui-grid__sort-icon[data-sort="desc"]::after {
+    content: "↓";
+}
+
+.ui-grid__row {
+    border-bottom: 1px solid var(--grid-border-color);
+    transition: background 0.15s;
+}
+
+.ui-grid__row:last-child {
+    border-bottom: none;
+}
+
+.ui-grid__row:hover {
+    background: var(--grid-row-hover);
+}
+
+.ui-grid__row--selected {
+    background: var(--grid-row-selected) !important;
+}
+
+.ui-grid__row--empty {
+    text-align: center;
+    color: #6b7280;
+}
+
+.ui-grid__row--empty .ui-grid__cell {
+    padding: 32px 16px;
+}
+
+.ui-grid__cell {
+    padding: 12px 16px;
+    color: #374151;
+}
+
+.ui-grid__cell--center {
+    text-align: center;
+}
+
+.ui-grid__cell--right {
+    text-align: right;
+}
+
+.ui-grid__cell--checkbox {
+    width: 50px;
+    text-align: center;
+}
+
+.ui-grid__checkbox,
+.ui-grid__checkbox-all {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #3b82f6;
+}
+
+.ui-grid__pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-top: 1px solid var(--grid-border-color);
+    background: var(--grid-header-bg);
+}
+
+.ui-grid__page-btn {
+    padding: 6px 12px;
+    border: 1px solid var(--grid-border-color);
+    border-radius: 6px;
+    background: #fff;
+    color: #374151;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.ui-grid__page-btn:hover:not(:disabled) {
+    background: #e5e7eb;
+    border-color: #d1d5db;
+}
+
+.ui-grid__page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.ui-grid__page-info {
+    margin: 0 8px;
+    color: #374151;
+}
+
+.ui-grid__page-info strong {
+    color: #111827;
+}
+
+.ui-grid__total {
+    margin-left: auto;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+/* HTMX Loading State */
+.ui-grid.htmx-request {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.ui-grid.htmx-request::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 5;
+}

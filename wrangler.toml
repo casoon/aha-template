@@ -1,0 +1,8 @@
+name = "aha-template"
+main = "./dist/_worker.js/index.js"
+compatibility_date = "2025-11-28"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"

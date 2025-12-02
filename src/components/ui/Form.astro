@@ -1,0 +1,344 @@
+---
+// Types inline definiert für standalone Nutzung
+interface FormFieldOption {
+	value: string;
+	label: string;
+}
+
+interface FormField {
+	name: string;
+	label: string;
+	type:
+		| "text"
+		| "email"
+		| "password"
+		| "number"
+		| "textarea"
+		| "select"
+		| "checkbox"
+		| "radio"
+		| "date";
+	required?: boolean;
+	disabled?: boolean;
+	placeholder?: string;
+	options?: FormFieldOption[];
+	defaultValue?: unknown;
+}
+
+interface Props {
+	fields: FormField[];
+	values?: Record<string, unknown>;
+	action?: string;
+	method?: "GET" | "POST";
+	layout?: "vertical" | "horizontal" | "inline";
+	submitLabel?: string;
+	resetLabel?: string;
+	showReset?: boolean;
+	className?: string;
+	__id?: string;
+	__hydrate?: boolean;
+}
+
+const {
+	fields,
+	values = {},
+	action,
+	method = "POST",
+	layout = "vertical",
+	submitLabel = "Absenden",
+	resetLabel = "Zuruecksetzen",
+	showReset = false,
+	className = "",
+	__id = "form",
+	__hydrate = false,
+} = Astro.props;
+
+function getFieldValue(field: FormField): unknown {
+	return values[field.name] ?? field.defaultValue ?? "";
+}
+---
+
+<form
+    class:list={["ui-form", `ui-form--${layout}`, className]}
+    id={__id}
+    action={action}
+    method={method}
+    data-component="form"
+    data-props={JSON.stringify({ fields: fields.map((f) => f.name), layout })}
+    novalidate
+>
+    <div class="ui-form__fields">
+        {
+            fields.map((field) => (
+                <div
+                    class:list={[
+                        "ui-form__field",
+                        { "ui-form__field--required": field.required },
+                    ]}
+                >
+                    {field.type !== "checkbox" && (
+                        <label
+                            class="ui-form__label"
+                            for={`${__id}-${field.name}`}
+                        >
+                            {field.label}
+                            {field.required && (
+                                <span class="ui-form__required">*</span>
+                            )}
+                        </label>
+                    )}
+
+                    {field.type === "textarea" ? (
+                        <textarea
+                            class="ui-form__input ui-form__textarea"
+                            id={`${__id}-${field.name}`}
+                            name={field.name}
+                            placeholder={field.placeholder}
+                            required={field.required}
+                            disabled={field.disabled}
+                            rows="4"
+                        >
+                            {getFieldValue(field)}
+                        </textarea>
+                    ) : field.type === "select" ? (
+                        <select
+                            class="ui-form__input ui-form__select"
+                            id={`${__id}-${field.name}`}
+                            name={field.name}
+                            required={field.required}
+                            disabled={field.disabled}
+                        >
+                            <option value="">
+                                {field.placeholder || "Bitte waehlen..."}
+                            </option>
+                            {field.options?.map((opt) => (
+                                <option
+                                    value={opt.value}
+                                    selected={
+                                        getFieldValue(field) === opt.value
+                                    }
+                                >
+                                    {opt.label}
+                                </option>
+                            ))}
+                        </select>
+                    ) : field.type === "checkbox" ? (
+                        <label class="ui-form__checkbox-label">
+                            <input
+                                type="checkbox"
+                                class="ui-form__checkbox"
+                                id={`${__id}-${field.name}`}
+                                name={field.name}
+                                checked={Boolean(getFieldValue(field))}
+                                disabled={field.disabled}
+                            />
+                            <span>{field.label}</span>
+                            {field.required && (
+                                <span class="ui-form__required">*</span>
+                            )}
+                        </label>
+                    ) : field.type === "radio" && field.options ? (
+                        <div class="ui-form__radio-group">
+                            {field.options.map((opt) => (
+                                <label class="ui-form__radio-label">
+                                    <input
+                                        type="radio"
+                                        class="ui-form__radio"
+                                        name={field.name}
+                                        value={opt.value}
+                                        checked={
+                                            getFieldValue(field) === opt.value
+                                        }
+                                        disabled={field.disabled}
+                                    />
+                                    <span>{opt.label}</span>
+                                </label>
+                            ))}
+                        </div>
+                    ) : (
+                        <input
+                            type={field.type}
+                            class="ui-form__input"
+                            id={`${__id}-${field.name}`}
+                            name={field.name}
+                            value={String(getFieldValue(field))}
+                            placeholder={field.placeholder}
+                            required={field.required}
+                            disabled={field.disabled}
+                        />
+                    )}
+
+                    <div class="ui-form__error" data-error={field.name} />
+                </div>
+            ))
+        }
+    </div>
+
+    <div class="ui-form__actions">
+        <button type="submit" class="ui-form__submit ui-btn ui-btn--primary">
+            {submitLabel}
+        </button>
+        {
+            showReset && (
+                <button
+                    type="reset"
+                    class="ui-form__reset ui-btn ui-btn--secondary"
+                >
+                    {resetLabel}
+                </button>
+            )
+        }
+    </div>
+</form>
+
+{
+    __hydrate && (
+        <script define:vars={{ formId: __id }}>
+            window.__UI_HYDRATE__ = window.__UI_HYDRATE__ || [];
+            window.__UI_HYDRATE__.push(formId);
+        </script>
+    )
+}
+
+<style>
+    .ui-form {
+        --form-gap: var(--ui-space-md, 16px);
+        --form-label-gap: var(--ui-space-xs, 4px);
+
+        font-family: var(--ui-font-family, system-ui, sans-serif);
+        font-size: var(--ui-font-size, 14px);
+    }
+
+    .ui-form__fields {
+        display: flex;
+        flex-direction: column;
+        gap: var(--form-gap);
+    }
+
+    .ui-form--horizontal .ui-form__fields {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .ui-form--inline .ui-form__fields {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-end;
+    }
+
+    .ui-form--inline .ui-form__field {
+        flex: 1 1 auto;
+        min-width: 150px;
+    }
+
+    .ui-form__field {
+        display: flex;
+        flex-direction: column;
+        gap: var(--form-label-gap);
+    }
+
+    .ui-form__label {
+        font-weight: 500;
+        color: var(--ui-text, #333);
+    }
+
+    .ui-form__required {
+        color: var(--ui-danger, #dc3545);
+        margin-left: 2px;
+    }
+
+    .ui-form__input {
+        padding: var(--ui-space-sm, 8px) var(--ui-space-md, 12px);
+        border: 1px solid var(--ui-border-color, #dee2e6);
+        border-radius: var(--ui-radius, 4px);
+        font-size: inherit;
+        font-family: inherit;
+        background: var(--ui-surface, #fff);
+        color: var(--ui-text, #333);
+        transition:
+            border-color 0.15s,
+            box-shadow 0.15s;
+    }
+
+    .ui-form__input:focus {
+        outline: none;
+        border-color: var(--ui-primary, #0066cc);
+        box-shadow: 0 0 0 3px var(--ui-primary-alpha, rgba(0, 102, 204, 0.15));
+    }
+
+    .ui-form__input:disabled {
+        background: var(--ui-disabled-bg, #e9ecef);
+        cursor: not-allowed;
+    }
+
+    .ui-form__input.ui-form__input--error {
+        border-color: var(--ui-danger, #dc3545);
+    }
+
+    .ui-form__textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    .ui-form__select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 36px;
+    }
+
+    .ui-form__checkbox-label,
+    .ui-form__radio-label {
+        display: flex;
+        align-items: center;
+        gap: var(--ui-space-sm, 8px);
+        cursor: pointer;
+    }
+
+    .ui-form__radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--ui-space-sm, 8px);
+    }
+
+    .ui-form__error {
+        color: var(--ui-danger, #dc3545);
+        font-size: 0.875em;
+        min-height: 1.25em;
+    }
+
+    .ui-form__actions {
+        display: flex;
+        gap: var(--ui-space-sm, 8px);
+        margin-top: var(--form-gap);
+    }
+
+    .ui-btn {
+        padding: var(--ui-space-sm, 8px) var(--ui-space-lg, 24px);
+        border: none;
+        border-radius: var(--ui-radius, 4px);
+        font-size: inherit;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+
+    .ui-btn--primary {
+        background: var(--ui-primary, #0066cc);
+        color: #fff;
+    }
+
+    .ui-btn--primary:hover {
+        background: var(--ui-primary-dark, #0052a3);
+    }
+
+    .ui-btn--secondary {
+        background: var(--ui-secondary, #6c757d);
+        color: #fff;
+    }
+
+    .ui-btn--secondary:hover {
+        background: var(--ui-secondary-dark, #545b62);
+    }
+</style>
