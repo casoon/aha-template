@@ -15,8 +15,8 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1(astro@5.16.3(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.53.3)(typescript@5.9.3))
       '@casoon/skibidoo-ui':
-        specifier: ^0.1.1
-        version: 0.1.1(alpinejs@3.15.2)(astro@5.16.3(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.53.3)(typescript@5.9.3))(htmx.org@2.0.8)(tailwindcss@4.1.17)
+        specifier: ^0.1.5
+        version: 0.1.5(alpinejs@3.15.2)(astro@5.16.3(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.53.3)(typescript@5.9.3))(htmx.org@2.0.8)(tailwindcss@4.1.17)
       '@tailwindcss/vite':
         specifier: ^4.1.17
         version: 4.1.17(vite@6.4.1(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2))
@@ -153,8 +153,8 @@ packages:
     peerDependencies:
       astro: '>=4.0.0'
 
-  '@casoon/skibidoo-ui@0.1.1':
-    resolution: {integrity: sha512-hVnDJo2mkwB5tNZrMXERSkonQ3z7bNEGKMwJ940zeAh0m7ru4uGQIWfkV5ehUbs8MbbYyfQWcKOhqODSj720vA==}
+  '@casoon/skibidoo-ui@0.1.5':
+    resolution: {integrity: sha512-gm0AWy5SSR0cLWEz4/OUkz2bRk4O61jexW8JXYaV3onT8MusSuKtGTUfL4V7pSigZTxDrfTC7t8kMbIjf+olpQ==}
     engines: {node: '>=22.0.0'}
     peerDependencies:
       alpinejs: '>=3.14.0'
@@ -2463,7 +2463,7 @@ snapshots:
     dependencies:
       astro: 5.16.3(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.53.3)(typescript@5.9.3)
 
-  '@casoon/skibidoo-ui@0.1.1(alpinejs@3.15.2)(astro@5.16.3(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.53.3)(typescript@5.9.3))(htmx.org@2.0.8)(tailwindcss@4.1.17)':
+  '@casoon/skibidoo-ui@0.1.5(alpinejs@3.15.2)(astro@5.16.3(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.53.3)(typescript@5.9.3))(htmx.org@2.0.8)(tailwindcss@4.1.17)':
     dependencies:
       '@casoon/fragment-renderer': 0.1.1(astro@5.16.3(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.53.3)(typescript@5.9.3))
       astro: 5.16.3(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.53.3)(typescript@5.9.3)

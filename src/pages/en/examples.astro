@@ -1,7 +1,6 @@
 ---
-import Form from "@components/ui/Form.astro";
-// Skibidoo-UI Komponenten (lokal kopiert)
-import Grid from "@components/ui/Grid.astro";
+import Form from "@casoon/skibidoo-ui/src/components/form/Form.astro";
+import Grid from "@casoon/skibidoo-ui/src/components/grid/Grid.astro";
 import { t } from "@i18n/translations";
 import BaseLayout from "@layouts/BaseLayout.astro";
 
@@ -9,116 +8,116 @@ const locale = "en";
 
 // Sample data for Grid
 const users = [
-	{
-		id: 1,
-		name: "John Smith",
-		email: "john@example.com",
-		status: "active",
-		role: "Admin",
-	},
-	{
-		id: 2,
-		name: "Jane Doe",
-		email: "jane@example.com",
-		status: "active",
-		role: "User",
-	},
-	{
-		id: 3,
-		name: "Bob Wilson",
-		email: "bob@example.com",
-		status: "inactive",
-		role: "User",
-	},
-	{
-		id: 4,
-		name: "Alice Brown",
-		email: "alice@example.com",
-		status: "active",
-		role: "Editor",
-	},
-	{
-		id: 5,
-		name: "Charlie Davis",
-		email: "charlie@example.com",
-		status: "active",
-		role: "User",
-	},
-	{
-		id: 6,
-		name: "Eva Martinez",
-		email: "eva@example.com",
-		status: "inactive",
-		role: "User",
-	},
-	{
-		id: 7,
-		name: "David Lee",
-		email: "david@example.com",
-		status: "active",
-		role: "Admin",
-	},
-	{
-		id: 8,
-		name: "Sarah Johnson",
-		email: "sarah@example.com",
-		status: "active",
-		role: "Editor",
-	},
+    {
+        id: 1,
+        name: "John Smith",
+        email: "john@example.com",
+        status: "active",
+        role: "Admin",
+    },
+    {
+        id: 2,
+        name: "Jane Doe",
+        email: "jane@example.com",
+        status: "active",
+        role: "User",
+    },
+    {
+        id: 3,
+        name: "Bob Wilson",
+        email: "bob@example.com",
+        status: "inactive",
+        role: "User",
+    },
+    {
+        id: 4,
+        name: "Alice Brown",
+        email: "alice@example.com",
+        status: "active",
+        role: "Editor",
+    },
+    {
+        id: 5,
+        name: "Charlie Davis",
+        email: "charlie@example.com",
+        status: "active",
+        role: "User",
+    },
+    {
+        id: 6,
+        name: "Eva Martinez",
+        email: "eva@example.com",
+        status: "inactive",
+        role: "User",
+    },
+    {
+        id: 7,
+        name: "David Lee",
+        email: "david@example.com",
+        status: "active",
+        role: "Admin",
+    },
+    {
+        id: 8,
+        name: "Sarah Johnson",
+        email: "sarah@example.com",
+        status: "active",
+        role: "Editor",
+    },
 ];
 
 const gridColumns = [
-	{
-		field: "id",
-		label: "ID",
-		width: 60,
-		sortable: true,
-		align: "center" as const,
-	},
-	{ field: "name", label: t(locale, "name"), sortable: true },
-	{ field: "email", label: t(locale, "email"), sortable: true },
-	{ field: "role", label: "Role", sortable: true },
-	{ field: "status", label: t(locale, "status"), sortable: true },
+    {
+        field: "id",
+        label: "ID",
+        width: 60,
+        sortable: true,
+        align: "center" as const,
+    },
+    { field: "name", label: t(locale, "name"), sortable: true },
+    { field: "email", label: t(locale, "email"), sortable: true },
+    { field: "role", label: "Role", sortable: true },
+    { field: "status", label: t(locale, "status"), sortable: true },
 ];
 
 // Form fields configuration
 const formFields = [
-	{
-		name: "name",
-		label: t(locale, "name"),
-		type: "text" as const,
-		required: true,
-		placeholder: "Your name",
-	},
-	{
-		name: "email",
-		label: t(locale, "email"),
-		type: "email" as const,
-		required: true,
-		placeholder: "your@email.com",
-	},
-	{
-		name: "category",
-		label: "Category",
-		type: "select" as const,
-		options: [
-			{ value: "general", label: "General" },
-			{ value: "support", label: "Support" },
-			{ value: "feedback", label: "Feedback" },
-		],
-	},
-	{
-		name: "message",
-		label: t(locale, "message"),
-		type: "textarea" as const,
-		required: true,
-		placeholder: "Your message...",
-	},
-	{
-		name: "newsletter",
-		label: "Subscribe to newsletter",
-		type: "checkbox" as const,
-	},
+    {
+        name: "name",
+        label: t(locale, "name"),
+        type: "text" as const,
+        required: true,
+        placeholder: "Your name",
+    },
+    {
+        name: "email",
+        label: t(locale, "email"),
+        type: "email" as const,
+        required: true,
+        placeholder: "your@email.com",
+    },
+    {
+        name: "category",
+        label: "Category",
+        type: "select" as const,
+        options: [
+            { value: "general", label: "General" },
+            { value: "support", label: "Support" },
+            { value: "feedback", label: "Feedback" },
+        ],
+    },
+    {
+        name: "message",
+        label: t(locale, "message"),
+        type: "textarea" as const,
+        required: true,
+        placeholder: "Your message...",
+    },
+    {
+        name: "newsletter",
+        label: "Subscribe to newsletter",
+        type: "checkbox" as const,
+    },
 ];
 ---
 

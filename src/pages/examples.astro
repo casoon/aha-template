@@ -1,5 +1,5 @@
 ---
-import Form from "@components/ui/Form.astro";
+import Form from "@casoon/skibidoo-ui/src/components/form/Form.astro";
 import { getLocaleFromUrl, t } from "@i18n/translations";
 import BaseLayout from "@layouts/BaseLayout.astro";
 
@@ -7,46 +7,48 @@ const locale = getLocaleFromUrl(Astro.url);
 
 // Form fields configuration
 const formFields = [
-	{
-		name: "name",
-		label: t(locale, "name"),
-		type: "text" as const,
-		required: true,
-		placeholder: locale === "de" ? "Ihr Name" : "Your name",
-	},
-	{
-		name: "email",
-		label: t(locale, "email"),
-		type: "email" as const,
-		required: true,
-		placeholder: locale === "de" ? "ihre@email.de" : "your@email.com",
-	},
-	{
-		name: "category",
-		label: locale === "de" ? "Kategorie" : "Category",
-		type: "select" as const,
-		options: [
-			{
-				value: "general",
-				label: locale === "de" ? "Allgemein" : "General",
-			},
-			{ value: "support", label: "Support" },
-			{ value: "feedback", label: "Feedback" },
-		],
-	},
-	{
-		name: "message",
-		label: t(locale, "message"),
-		type: "textarea" as const,
-		required: true,
-		placeholder: locale === "de" ? "Ihre Nachricht..." : "Your message...",
-	},
-	{
-		name: "newsletter",
-		label:
-			locale === "de" ? "Newsletter abonnieren" : "Subscribe to newsletter",
-		type: "checkbox" as const,
-	},
+    {
+        name: "name",
+        label: t(locale, "name"),
+        type: "text" as const,
+        required: true,
+        placeholder: locale === "de" ? "Ihr Name" : "Your name",
+    },
+    {
+        name: "email",
+        label: t(locale, "email"),
+        type: "email" as const,
+        required: true,
+        placeholder: locale === "de" ? "ihre@email.de" : "your@email.com",
+    },
+    {
+        name: "category",
+        label: locale === "de" ? "Kategorie" : "Category",
+        type: "select" as const,
+        options: [
+            {
+                value: "general",
+                label: locale === "de" ? "Allgemein" : "General",
+            },
+            { value: "support", label: "Support" },
+            { value: "feedback", label: "Feedback" },
+        ],
+    },
+    {
+        name: "message",
+        label: t(locale, "message"),
+        type: "textarea" as const,
+        required: true,
+        placeholder: locale === "de" ? "Ihre Nachricht..." : "Your message...",
+    },
+    {
+        name: "newsletter",
+        label:
+            locale === "de"
+                ? "Newsletter abonnieren"
+                : "Subscribe to newsletter",
+        type: "checkbox" as const,
+    },
 ];
 ---
 
