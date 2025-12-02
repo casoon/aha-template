@@ -5,104 +5,162 @@ import type { Locale } from "@i18n/translations";
 import { getLocalizedPath, t } from "@i18n/translations";
 
 interface Props {
-	title: string;
-	locale?: Locale;
+    title: string;
+    locale?: Locale;
 }
 
 const { title, locale = "de" } = Astro.props;
 
 const locales: { code: Locale; label: string; flag: string }[] = [
-	{ code: "de", label: "Deutsch", flag: "DE" },
-	{ code: "en", label: "English", flag: "EN" },
+    { code: "de", label: "Deutsch", flag: "DE" },
+    { code: "en", label: "English", flag: "EN" },
 ];
 
 const currentPath = Astro.url.pathname.replace(/^\/(en)/, "") || "/";
 
 const navItems = [
-	{ href: "/", label: t(locale, "home") },
-	{ href: "/examples", label: t(locale, "examples") },
+    { href: "/", label: t(locale, "home") },
+    { href: "/examples", label: t(locale, "examples") },
 ];
 ---
 
 <!doctype html>
 <html lang={locale}>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={t(locale, "tagline")} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title} - {t(locale, "appName")}</title>
-    <ViewTransitions />
-    <script is:inline src="https://unpkg.com/htmx.org@2.0.4"></script>
-    <script is:inline defer src="https://unpkg.com/alpinejs@3.14.0/dist/cdn.min.js"></script>
-    <script is:inline>
-      // Re-initialize HTMX after View Transitions
-      document.addEventListener("astro:page-load", () => {
-        if (window.htmx) {
-          htmx.process(document.body);
-        }
-      });
-    </script>
-  </head>
-  <body class="min-h-screen bg-gray-50">
-    <div class="min-h-screen flex flex-col">
-      <!-- Header -->
-      <header class="bg-white shadow-sm border-b border-gray-200">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <a href={getLocalizedPath("/", locale)} class="flex items-center gap-3 group">
-            <span class="text-2xl font-bold text-primary-600 group-hover:text-primary-700 transition-colors">
-              {t(locale, "appName")}
-            </span>
-            <span class="text-sm text-gray-500">{t(locale, "tagline")}</span>
-          </a>
-
-          <div class="flex items-center gap-6">
-            <!-- Navigation -->
-            <nav class="hidden sm:flex gap-4">
-              {navItems.map((item) => (
-                <a
-                  href={getLocalizedPath(item.href, locale)}
-                  class="text-gray-600 hover:text-primary-600 font-medium transition-colors"
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content={t(locale, "tagline")} />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <title>{title} - {t(locale, "appName")}</title>
+        <ViewTransitions />
+        <script
+            is:inline
+            src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.4/dist/htmx.min.js"
+        ></script>
+        <script
+            is:inline
+            defer
+            src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.0/dist/cdn.min.js"
+        ></script>
+        <script is:inline>
+            // Re-initialize HTMX after View Transitions
+            document.addEventListener("astro:page-load", () => {
+                if (window.htmx) {
+                    htmx.process(document.body);
+                }
+            });
+        </script>
+    </head>
+    <body class="min-h-screen bg-gray-50">
+        <div class="min-h-screen flex flex-col">
+            <!-- Header -->
+            <header class="bg-white shadow-sm border-b border-gray-200">
+                <div
+                    class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center"
                 >
-                  {item.label}
-                </a>
-              ))}
-            </nav>
+                    <a
+                        href={getLocalizedPath("/", locale)}
+                        class="flex items-center gap-3 group"
+                    >
+                        <span
+                            class="text-2xl font-bold text-primary-600 group-hover:text-primary-700 transition-colors"
+                        >
+                            {t(locale, "appName")}
+                        </span>
+                        <span class="text-sm text-gray-500"
+                            >{t(locale, "tagline")}</span
+                        >
+                    </a>
 
-            <!-- Language Switcher -->
-            <nav class="language-switcher" aria-label={t(locale, "language")}>
-              {locales.map((loc) => (
-                <a
-                  href={getLocalizedPath(currentPath, loc.code)}
-                  class:list={["language-btn", { active: locale === loc.code }]}
-                  aria-current={locale === loc.code ? "page" : undefined}
-                >
-                  {loc.flag}
-                </a>
-              ))}
-            </nav>
-          </div>
+                    <div class="flex items-center gap-6">
+                        <!-- Navigation -->
+                        <nav class="hidden sm:flex gap-4">
+                            {
+                                navItems.map((item) => (
+                                    <a
+                                        href={getLocalizedPath(
+                                            item.href,
+                                            locale,
+                                        )}
+                                        class="text-gray-600 hover:text-primary-600 font-medium transition-colors"
+                                    >
+                                        {item.label}
+                                    </a>
+                                ))
+                            }
+                        </nav>
+
+                        <!-- Language Switcher -->
+                        <nav
+                            class="language-switcher"
+                            aria-label={t(locale, "language")}
+                        >
+                            {
+                                locales.map((loc) => (
+                                    <a
+                                        href={getLocalizedPath(
+                                            currentPath,
+                                            loc.code,
+                                        )}
+                                        class:list={[
+                                            "language-btn",
+                                            { active: locale === loc.code },
+                                        ]}
+                                        aria-current={
+                                            locale === loc.code
+                                                ? "page"
+                                                : undefined
+                                        }
+                                    >
+                                        {loc.flag}
+                                    </a>
+                                ))
+                            }
+                        </nav>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-4 md:p-8" transition:animate="fade">
+                <div class="max-w-6xl mx-auto">
+                    <slot />
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer
+                class="bg-white border-t border-gray-200 p-4 text-center text-gray-500 text-sm"
+            >
+                <p>
+                    Built with
+                    <a
+                        href="https://astro.build"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-primary-600 hover:underline">Astro</a
+                    >,
+                    <a
+                        href="https://htmx.org"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-primary-600 hover:underline">HTMX</a
+                    >,
+                    <a
+                        href="https://alpinejs.dev"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-primary-600 hover:underline">Alpine.js</a
+                    >
+                    &amp;
+                    <a
+                        href="https://github.com/casoon/skibidoo-ui"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-primary-600 hover:underline">Skibidoo-UI</a
+                    >
+                </p>
+            </footer>
         </div>
-      </header>
-
-      <!-- Main Content -->
-      <main class="flex-1 p-4 md:p-8" transition:animate="fade">
-        <div class="max-w-6xl mx-auto">
-          <slot />
-        </div>
-      </main>
-
-      <!-- Footer -->
-      <footer class="bg-white border-t border-gray-200 p-4 text-center text-gray-500 text-sm">
-        <p>
-          Built with
-          <a href="https://astro.build" target="_blank" rel="noopener" class="text-primary-600 hover:underline">Astro</a>,
-          <a href="https://htmx.org" target="_blank" rel="noopener" class="text-primary-600 hover:underline">HTMX</a>,
-          <a href="https://alpinejs.dev" target="_blank" rel="noopener" class="text-primary-600 hover:underline">Alpine.js</a>
-          &amp;
-          <a href="https://github.com/casoon/skibidoo-ui" target="_blank" rel="noopener" class="text-primary-600 hover:underline">Skibidoo-UI</a>
-        </p>
-      </footer>
-    </div>
-  </body>
+    </body>
 </html>
