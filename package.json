@@ -2,6 +2,7 @@
   "name": "aha-template",
   "type": "module",
   "version": "0.1.0",
+  "license": "MIT",
   "description": "AHA-Stack Template: Astro + HTMX + Alpine.js + Tailwind CSS with Skibidoo-UI",
   "packageManager": "pnpm@9.14.2",
   "volta": {
